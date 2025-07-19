@@ -68,6 +68,14 @@
             <div id="detail-text">
               <h3 id="price" class="text-xl"></h3>
               <h3 id="stock" class="text-xl"></h3>
+              <h3 id="read-menu-detail" class="hidden text-xl"></h3>
+              <div id="select-menu-detail" class="hidden flex gap-1">
+                <h3 class="text-xl"></h3>
+                <div class="selectable-detail-container flex flex-wrap gap-1">
+                  <button id="selectable-detail-btn" class="hidden rounded-lg text-md px-1 bg-black/20 border-1"></button>
+                </div>
+              </div>
+              
             </div>
             <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2" onclick="addOrder(this)">tambah ke keranjang</button>
           </div>
@@ -88,7 +96,7 @@
 const menuDatas = [
   {
     name: "cireng",
-    price: [ 'normal 3k' ],
+    price: [ '3k' ],
     stock: 'tersedia',
     extras: [
       {name: 'isi', type: "read", data: "ayam"}
@@ -97,7 +105,7 @@ const menuDatas = [
   },
   {
     name: "mochi",
-    price: [ 'normal 2k' ],
+    price: [ '2k' ],
     stock: 'tersedia',
     extras: [
       {name: 'rasa', type: 'read', data: 'coklat'}
@@ -106,7 +114,7 @@ const menuDatas = [
   },
   {
     name: 'es krim',
-    price: [ 'normal 3k' ],
+    price: [ '3k', '4k', '4k' ],
     stock: 'tersedia',
     extras: [
       {name: 'ukuran', type: 'read', data: 'kecil'},
@@ -126,29 +134,66 @@ menuDatas.forEach(menuData => {
   
   const newNodeChildren = newNode.children
   newNodeChildren[1].textContent = menuData.name
+  newNode.dataset['name'] = menuData.name
   
   const details = newNodeChildren[2]
-  details.id = menuData.name
   const detailsChildren = details.children[0].children
   
   detailsChildren[1].textContent = "status: " + menuData.stock
-  detailsChildren[0].textContent = "harga: " + menuData.price[0].split(' ')[1]
-  menuData.extras.forEach(extra=>{
+  detailsChildren[0].textContent = "harga: " + menuData.price[0]
+  newNode.dataset['price'] = menuData.price[0]
+  menuData.extras.forEach((extra, index)=>{
     if(extra.type === 'read'){
-      const newDetail = detailsChildren[1].cloneNode()
+      const newDetail = template.content.getElementById('read-menu-detail').cloneNode()
       newDetail.id = 'custom-detail'
       newDetail.classList.remove('hidden')
+      
       newDetail.textContent = extra.name + ": " + extra.data
+      newNode.dataset['extra' + index] = extra.data
+      
+      details.children[0].appendChild(newDetail)
+    }
+    else{
+      const newDetail = template.content.getElementById('select-menu-detail').cloneNode(true)
+      newDetail.classList.remove('hidden')
+      
+      newDetail.children[0].textContent = extra.name + ': '
+      newDetailBtnContainer = newDetail.children[1]
+      for(j=0;j<extra.data.length;j++){
+        const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
+        newSelectableDetail.classList.remove('hidden')
+        
+        newSelectableDetail.textContent = extra.data[j]
+        newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + extra.name + '-' + j
+        newDetailBtnContainer.appendChild(newSelectableDetail)
+        
+        newSelectableDetail.onclick = () => {
+          let oldSelected = newDetailBtnContainer.querySelector('.selected')
+          oldSelected.classList.remove('selected', 'bg-blue-500/50')
+          
+          newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
+          newNode.dataset['extra' + index] = newSelectableDetail.textContent
+          if(menuData.price.length >= newSelectableDetail.id.at(-1)){
+            detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
+            newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
+          }
+        } 
+      }
+        
+      newDetailBtnContainer.children[1].classList.add('selected', 'bg-blue-500/50')
+      newNode.dataset['extra' + index] = extra.data[0]
+ 
+        
       details.children[0].appendChild(newDetail)
     }
   })
+  newNode.dataset.extraLength = menuData.extras.length
   
   menuList.appendChild(newNode)
 })
 menuList.children[0].classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
 const firstListDetail = menuList.children[0].children[2]
 firstListDetail.style.maxHeight = firstListDetail.scrollHeight + 100 + "px"
-  console.log(firstListDetail.style.maxHeight + " and " + firstListDetail.scrollHeight)
 
 
   
@@ -158,7 +203,7 @@ function changeMenuSelected(newSelected, event) {
     oldSelected.classList.remove('border-3', 'border-[#FFC107]', 'menu-selected')
     oldSelected.children[2].style.maxHeight = 0
   }
-  if(event.target.id !== 'place-order-button' && oldSelected === newSelected){return}
+  if(event.target.tagName !== 'BUTTON' && oldSelected === newSelected){return}
   
   newSelected.classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
   const detail = newSelected.children[2]
@@ -172,6 +217,7 @@ const cartItemListNode = template.content.getElementById('cart-item-list-node')
 const cartNotif = document.getElementById("cart-notification")
 function addOrder(element){
   const parent = element.parentElement
+  const rootParent = parent.parentElement
   const itemDetail = parent.children[0].children
   
   const newItem = cartItemListNode.cloneNode(true)
@@ -179,16 +225,17 @@ function addOrder(element){
   const children = newItem.children[0].children
   
   let itemSelectedData = parent.id + "-" + itemDetail[0].textContent.split(' ')[1] + "-"
-  children[1].textContent = parent.id
-  children[2].textContent = itemDetail[0].textContent.split(' ')[1]
+  children[1].textContent = rootParent.dataset['name']
+  children[2].textContent = rootParent.dataset['price']
   const extraDetailNode = children[3]
-  for(i=2;i<itemDetail.length;i++){
+  for(i=0;i<rootParent.dataset.extraLength;i++){
     const newDetail = extraDetailNode.cloneNode()
     newDetail.classList.remove('hidden')
     
-    newDetail.textContent = itemDetail[i].textContent.split(' ')[1]
-    itemSelectedData += (itemDetail[i].textContent.split(' ')[1] + '-')
     
+    newDetail.textContent = rootParent.dataset['extra' + i]
+    itemSelectedData += (rootParent.dataset['extra' + i] + '-')
+    console.log(rootParent.dataset['extra1'])
     
     newItem.children[0].appendChild(newDetail)
   }
@@ -203,6 +250,8 @@ function addOrder(element){
     
   newItem.id = itemSelectedData
   cartItemList.appendChild(newItem)
+  const hr = document.createElement('hr')
+  cartItemList.appendChild(hr)
   cartNotif.parentElement.classList.remove('hidden')
   cartNotif.textContent = (parseInt(cartNotif.textContent) + 1) + ' baru!'
 }
