@@ -3,7 +3,6 @@
 <html>
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello, World!</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
@@ -36,7 +35,7 @@
         
       </ul>
     </div>
-    <button class="bg-green-500 w-full text-center text-xl py-1 mt-3 rounded-lg">Kirim Pesanan</button>
+    <button class="bg-green-500 w-full text-center text-xl py-1 mt-3 rounded-lg">Buatkan Pesanan</button>
   </div>
   
   <main id="page-main" class="mt-1">
@@ -92,37 +91,12 @@
           </ul>
           <button class="px-1 h-fit border-1 border-black bg-black/50 rounded-lg text-white" onclick='removeItem(this)'>hapus</button>
         </li>
+    
   </template>
+  
+<script src="./data/text/menu.js"></script>
 <script>
-const menuDatas = [
-  {
-    name: "cireng",
-    price: [ '3k' ],
-    stock: 'tersedia',
-    extras: [
-      {name: 'isi', type: "read", data: "ayam"}
-    ],
-    image: "cireng.png"
-  },
-  {
-    name: "mochi",
-    price: [ '2k' ],
-    stock: 'tersedia',
-    extras: [
-      {name: 'rasa', type: 'read', data: 'coklat'}
-    ],
-    image: "mochi.png"
-  },
-  {
-    name: 'es krim',
-    price: [ '3k', '4k', '4k' ],
-    stock: 'tersedia',
-    extras: [
-      {name: 'ukuran', type: 'read', data: 'kecil'},
-      {name: 'topping', type: 'selectable', data: [ 'original', 'coklat', 'stroberi' ]}
-    ]
-  }
-  ]
+
 const template = document.getElementById('template-node')
   
 const menuList = document.getElementById("menu-list")
@@ -160,6 +134,7 @@ menuDatas.forEach(menuData => {
       
       newDetail.children[0].textContent = extra.name + ': '
       newDetailBtnContainer = newDetail.children[1]
+      newDetail.id = 'select-menu-detail-' + index
       for(j=0;j<extra.data.length;j++){
         const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
         newSelectableDetail.classList.remove('hidden')
@@ -169,15 +144,17 @@ menuDatas.forEach(menuData => {
         newDetailBtnContainer.appendChild(newSelectableDetail)
         
         newSelectableDetail.onclick = () => {
-          let oldSelected = newDetailBtnContainer.querySelector('.selected')
+          let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
+          console.log()
           oldSelected.classList.remove('selected', 'bg-blue-500/50')
           
           newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
           newNode.dataset['extra' + index] = newSelectableDetail.textContent
-          if(menuData.price.length >= newSelectableDetail.id.at(-1)){
+          if(extra.referencePrice && menuData.price.length >= newSelectableDetail.id.at(-1)){
             detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
             newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
           }
+          
         } 
       }
         
@@ -236,13 +213,14 @@ function addOrder(element){
     
     newDetail.textContent = rootParent.dataset['extra' + i]
     itemSelectedData += (rootParent.dataset['extra' + i] + '-')
-    console.log(rootParent.dataset['extra1'])
     
     newItem.children[0].appendChild(newDetail)
   }
   const existItemList = document.getElementById(itemSelectedData)
   if(existItemList){
-    existItemList.children[0].children[0].textContent = parseInt(existItemList.children[0].children[0].textContent) + 1
+    //existItemList.children[0].children[0].textContent = parseInt(existItemList.children[0].children[0].textContent) + 1
+    existItemList.children[0].children[0].textContent = parseInt(existItemList.dataset.orderCount) + 1
+    existItemList.dataset.orderCount = parseInt(existItemList.dataset.orderCount) + 1
 
     cartNotif.parentElement.classList.remove('hidden')
     cartNotif.textContent = (parseInt(cartNotif.textContent) + 1) + ' baru!'
@@ -250,6 +228,7 @@ function addOrder(element){
   }  
     
   newItem.id = itemSelectedData
+  newItem.dataset.orderCount = 1
   cartItemList.appendChild(newItem)
   const hr = document.createElement('hr')
   cartItemList.appendChild(hr)
@@ -258,7 +237,15 @@ function addOrder(element){
 }
   
 function removeItem(el){
-  el.parentElement.remove()
+  const parent = el.parentElement
+  parent.dataset.orderCount = parseInt(parent.dataset.orderCount) -1
+  if(parseInt(parent.dataset.orderCount) === 0){
+    parent.nextElementSibling.remove()
+    parent.remove()
+    return
+  }
+  
+  parent.children[0].children[0].textContent = parent.dataset.orderCount
 }
   
   
