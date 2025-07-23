@@ -1,4 +1,6 @@
-const menuDatas = [
+const data = { 
+  prefilledGform : 'https://docs.google.com/forms/d/e/1FAIpQLSckhDSOuUGpPk6RTBpWvLxXQ6ypq2NNZviRSEJOBW2ZHuvWsA/viewform?usp=pp_url&entry.606693717=gform-order-list&entry.111848189=gform-total-price',
+  menuDatas : [
   {
     name: "cireng",
     price: [ '3k' ],
@@ -27,5 +29,5 @@ const menuDatas = [
     ]
   }
 ]
-
+}
 
