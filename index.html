@@ -26,6 +26,7 @@
     </div>
   </nav>
   
+  
   <div id="shopping-cart" class="hidden p-2 flex flex-col justify-center py-4">
     <button class="py-1 px-2 bg-[#E0E0E0] rounded-md w-fit mx-auto" onclick="toggleCart()">kembali ke menu</button>
     
@@ -46,6 +47,7 @@
     <textarea id='textarea'></textarea>
   </div>
   
+  
   <main id="page-main" class="mt-1">
     <section class="flex flex-col items-center px-3 mt-6 py-8" id="welcome">
       <h1 class="text-5xl ml-3 text-[#333333]"> Laper? Cek Danus Dulu 😋</h1>
@@ -63,44 +65,46 @@
     </section>
   </main>
   
+  
   <footer id="page-footer" class="h-screen">
     
   </footer>
   
   
   <template id="template-node">
+    
     <li id="menu-list-node" class="hidden content-box bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
-          <img id="image" class="w-32 h-32 mx-auto">
-          <h3 id="name" class="text-3xl mb-1 text-center"></h3>
-          <div id="detail" class="additional-info overflow-hidden max-h-0 transition-all duration-300">
-            <div id="detail-text">
-              <h3 id="price" class="text-xl transition-colors duration-300 ease-out"></h3>
-              <h3 id="stock" class="text-xl"></h3>
-              <h3 id="read-menu-detail" class="hidden text-xl"></h3>
-              <div id="select-menu-detail" class="hidden flex gap-1 my-1">
-                <h3 class="text-xl"></h3>
-                <div class="selectable-detail-container flex flex-wrap gap-1">
-                  <button id="selectable-detail-btn" class="hidden rounded-lg text-md px-1 bg-black/20 border-1"></button>
-                </div>
-              </div>
-              
+      <img id="image" class="w-32 h-32 mx-auto">
+      <h3 id="name" class="text-3xl mb-1 text-center"></h3>
+      <div id="detail" class="additional-info overflow-hidden max-h-0 transition-all duration-300">
+        <div id="detail-text">
+          <h3 id="price" class="text-xl transition-colors duration-300 ease-out"></h3>
+          <h3 id="stock" class="text-xl"></h3>
+          <h3 id="read-menu-detail" class="hidden text-xl"></h3>
+          <div id="select-menu-detail" class="hidden flex gap-1 my-1">
+            <h3 class="text-xl"></h3>
+            <div class="selectable-detail-container flex flex-wrap gap-1">
+              <button id="selectable-detail-btn" class="hidden rounded-lg text-md px-1 bg-black/20 border-1"></button>
             </div>
-            <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2 rounded-sm" onclick="addOrder(this)">tambah ke keranjang</button>
-          </div>
-          
-        </li>
+          </div>   
+        </div>
+        <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2 rounded-sm" onclick="addOrder(this)">tambah ke keranjang</button>
+      </div>
+    </li>
     
     <li id="cart-item-list-node" class="hidden flex flex-row items-start flex-wrap justify-between">
-          <ul id="cart-item-detail-node" class="flex flex-grow flex-wrap max-w-[80%] gap-1">
-            <li id="same-order-total" class="border-1 border-black rounded-lg px-1 bg-black/50 text-white">1</li>
-            <li id="cart-item-name" class="border-1 border-[#FFC107] rounded-lg px-1 bg-[#FFC107]/50"></li>
-            <li id="cart-item-variant" class="border-1 border-red-500 rounded-lg px-1 bg-red-500/50"></li>
-            <li id="cart-item-extra" class="hidden border-1 border-green-500 rounded-lg px-1 bg-green-500/50"></li>
-          </ul>
-          <button class="px-1 h-fit border-1 border-black bg-black/50 rounded-lg text-white" onclick='removeItem(this)'>hapus</button>
-        </li>
+      <ul id="cart-item-detail-node" class="flex flex-grow flex-wrap max-w-[80%] gap-1">
+        <li id="same-order-total" class="border-1 border-black rounded-lg px-1 bg-black/50 text-white">1</li>
+        <li id="cart-item-name" class="border-1 border-[#FFC107] rounded-lg px-1 bg-[#FFC107]/50"></li>
+        <li id="cart-item-variant" class="border-1 border-red-500 rounded-lg px-1 bg-red-500/50"></li>
+        <li id="cart-item-extra" class="hidden border-1 border-green-500 rounded-lg px-1 bg-green-500/50"></li>
+      </ul>
+      <button class="px-1 h-fit border-1 border-black bg-black/50 rounded-lg text-white" onclick='removeItem(this)'>hapus</button>
+    </li>
     
   </template>
+
+  
   
 <script src="./data/text/menu.js"></script>
 <script>
