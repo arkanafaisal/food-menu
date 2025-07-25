@@ -85,7 +85,7 @@
               </div>
               
             </div>
-            <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2" onclick="addOrder(this)">tambah ke keranjang</button>
+            <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2 rounded-sm" onclick="addOrder(this)">tambah ke keranjang</button>
           </div>
           
         </li>
@@ -104,180 +104,106 @@
   
 <script src="./data/text/menu.js"></script>
 <script>
+const template = document.getElementById('template-node')
 
-//const dataUrl = "https://drive.google.com/uc?export=download&id=1TpNY_4H8FBTtmHmvtbLvv3H74HKv2gSB"
-//const dynamicData = await fetch(dataUrl)
-let dynamicData = []
-
-//getData()
-  
-async function getData2(){
+getData()
+async function getData(){
   const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
   const response = await fetch(dataUrl)
-  buffer = await response.text()
-  alert('fetch done')
+  let data = await response.text()
+  data = data.replace(/\r/g, '').split('\n')
   
-  buffer2 = buffer.replace(/\r/g, '').split('\n')
   let dataJson = []
-  
-  for(let i=1; i<buffer2.length; i++){
-    let cleaned = buffer2[i].split(',')
-    let buffer3 = {}
-    buffer3.name = cleaned[0]
-    buffer3.stock = cleaned[1]
-    buffer3.image = cleaned[2]
-    buffer3.price = cleaned[3]
-    if(cleaned[3].indexOf('&')){buffer3.price = cleaned[3].split('&')}
+  for(let i=1; i<data.length; i++){
+    let cleaned = data[i].split(',')
+    let dataObject = {}
+    dataObject.name = cleaned[0]
+    dataObject.stock = cleaned[1]
+    dataObject.image = cleaned[2]
+    dataObject.price = cleaned[3]
+    if(cleaned[3].indexOf('&')){dataObject.price = cleaned[3].split('&')}
+    
     let extras = []
     for(j=4; j<cleaned.length; j++){
       if(cleaned[j] === '') continue
+      
       let extra = cleaned[j].split('=')
-      buffer3[extra[0]] = (extra[1].replace(/\[|\]/g, '')).split('&')
+      dataObject[extra[0]] = (extra[1].replace(/\[|\]/g, '')).split('&')
     }
-    dataJson.push(buffer3)
-    
+      
+    dataJson.push(dataObject)
   }
-    console.log(JSON.stringify(dataJson))
-    dynamicData = dataJson
-  
-  
-  document.getElementById('textarea').value = JSON.stringify(dataJson)
+    
   initiateData(dataJson)
 }
-getData2()
   
-const template = document.getElementById('template-node')
-  
+ 
 const menuList = document.getElementById("menu-list")
 const menuListNode = template.content.getElementById("menu-list-node")
-
 function initiateData(data){
   data.forEach(menuData => {
-  const newNode = menuListNode.cloneNode(true)
-  newNode.onclick = () => {changeMenuSelected(newNode, event)}
-  newNode.classList.remove('hidden')
+    const newNode = menuListNode.cloneNode(true)
+    newNode.onclick = () => {changeMenuSelected(newNode, event)}
+    newNode.classList.remove('hidden')
   
-  const newNodeChildren = newNode.children
-  newNodeChildren[1].textContent = menuData.name
-  newNode.dataset['name'] = menuData.name
+    const newNodeChildren = newNode.children
+    newNodeChildren[1].textContent = menuData.name
+    newNode.dataset['name'] = menuData.name
   
-  const details = newNodeChildren[2]
-  const detailsChildren = details.children[0].children
+    const details = newNodeChildren[2]
+    const detailsChildren = details.children[0].children
   
-  detailsChildren[1].textContent = "status: " + menuData.stock
-  detailsChildren[0].textContent = "harga: " + menuData.price[0]
-  newNode.dataset['price'] = menuData.price[0]
+    detailsChildren[1].textContent = "status: " + menuData.stock
+    detailsChildren[0].textContent = "harga: " + menuData.price[0]
+    newNode.dataset['price'] = menuData.price[0]
   
-  const keys = Object.keys(menuData)
-  for(let i=4; i<keys.length; i++){
-    const newDetail = template.content.getElementById('select-menu-detail').cloneNode(true)
-    newDetail.classList.remove('hidden')
-      
-    newDetail.children[0].textContent = keys[i] + ': '
-    newDetailBtnContainer = newDetail.children[1]
-    newDetail.id = 'select-menu-detail-' + i
-    
-    for(let j=0; j<menuData[keys[i]].length; j++){
-      const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
-      newSelectableDetail.classList.remove('hidden')
-        
-      newSelectableDetail.textContent = menuData[keys[i]][j]
-      newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + keys[i] + '-' + j
-      newDetailBtnContainer.appendChild(newSelectableDetail)
-      
-      newSelectableDetail.onclick = () => {
-        let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
-        oldSelected.classList.remove('selected', 'bg-blue-500/50')
-          
-        newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
-        newNode.dataset['extra' + i] = newSelectableDetail.textContent
-        console.log(newNode.dataset['extra' + i] + i)
-        if(menuData.price.length >= newSelectableDetail.id.at(-1)){
-          detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
-          newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
-          detailsChildren[0].classList.add('text-red-500')
-          setTimeout(() => 
-          {
-            detailsChildren[0].classList.remove('text-red-500')
-          }, 300)
-        }
-      }
-      
-      
-    }
-      
-      newDetailBtnContainer.children[1].classList.add('selected', 'bg-blue-500/50')
-      newNode.dataset['extra' + i] = menuData[keys[i]][0]
- 
-        
-      details.children[0].appendChild(newDetail)
-  }
-  /*  
-  menuData.extras.forEach((extra, index)=>{
-    if(extra.type === 'read'){
-      const newDetail = template.content.getElementById('read-menu-detail').cloneNode()
-      newDetail.id = 'custom-detail'
-      newDetail.classList.remove('hidden')
-      
-      newDetail.textContent = extra.name + ": " + extra.data
-      newNode.dataset['extra' + index] = extra.data
-      
-      details.children[0].appendChild(newDetail)
-    }
-    else{
+    const keys = Object.keys(menuData)
+    for(let i=4; i<keys.length; i++){
       const newDetail = template.content.getElementById('select-menu-detail').cloneNode(true)
       newDetail.classList.remove('hidden')
       
-      newDetail.children[0].textContent = extra.name + ': '
+      newDetail.children[0].textContent = keys[i] + ': '
       newDetailBtnContainer = newDetail.children[1]
-      newDetail.id = 'select-menu-detail-' + index
-      for(j=0;j<extra.data.length;j++){
+      newDetail.id = 'select-menu-detail-' + i
+    
+      for(let j=0; j<menuData[keys[i]].length; j++){
         const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
         newSelectableDetail.classList.remove('hidden')
         
-        newSelectableDetail.textContent = extra.data[j]
-        newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + extra.name + '-' + j
+        newSelectableDetail.textContent = menuData[keys[i]][j]
+        newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + keys[i] + '-' + j
         newDetailBtnContainer.appendChild(newSelectableDetail)
-        
+      
         newSelectableDetail.onclick = () => {
           let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
-          console.log()
           oldSelected.classList.remove('selected', 'bg-blue-500/50')
           
           newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
-          newNode.dataset['extra' + index] = newSelectableDetail.textContent
-          if(extra.referencePrice && menuData.price.length >= newSelectableDetail.id.at(-1)){
+          newNode.dataset['extra' + i] = newSelectableDetail.textContent
+          
+          if(i === 4 && menuData.price.length >= newSelectableDetail.id.at(-1)){
             detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
             newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
             detailsChildren[0].classList.add('text-red-500')
-            setTimeout(() => 
-            {
-              detailsChildren[0].classList.remove('text-red-500')
-            }, 300)
+            setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
           }
-          
-        } 
+        }
       }
-        
       newDetailBtnContainer.children[1].classList.add('selected', 'bg-blue-500/50')
-      newNode.dataset['extra' + index] = extra.data[0]
+      newNode.dataset['extra' + i] = menuData[keys[i]][0]
  
-        
       details.children[0].appendChild(newDetail)
     }
-  })*/
-  newNode.dataset.extraLength = keys.length
   
-  menuList.appendChild(newNode)
-})
-menuList.children[0].classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
-const firstListDetail = menuList.children[0].children[2]
-firstListDetail.style.maxHeight = firstListDetail.scrollHeight + 100 + "px"
-
+    newNode.dataset.extraLength = keys.length
+    menuList.appendChild(newNode)
+  })
+  menuList.children[0].classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
+  const firstListDetail = menuList.children[0].children[2]
+  firstListDetail.style.maxHeight = firstListDetail.scrollHeight + 100 + "px"
 }
 
 
-  
 function changeMenuSelected(newSelected, event) {
   oldSelected = document.querySelector(".menu-selected")
   if(oldSelected){
@@ -289,7 +215,6 @@ function changeMenuSelected(newSelected, event) {
   newSelected.classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
   const detail = newSelected.children[2]
   detail.style.maxHeight = detail.scrollHeight + "px"
-
 }
   
   
@@ -322,9 +247,9 @@ function addOrder(element){
     
     newItem.children[0].appendChild(newDetail)
   }
+    
   const existItemList = document.getElementById(itemSelectedData)
   if(existItemList){
-    //existItemList.children[0].children[0].textContent = parseInt(existItemList.children[0].children[0].textContent) + 1
     existItemList.children[0].children[0].textContent = parseInt(existItemList.dataset.orderCount) + 1
     existItemList.dataset.orderCount = parseInt(existItemList.dataset.orderCount) + 1
 
@@ -336,8 +261,10 @@ function addOrder(element){
   newItem.id = itemSelectedData
   newItem.dataset.orderCount = 1
   cartItemList.appendChild(newItem)
+  
   const hr = document.createElement('hr')
   cartItemList.appendChild(hr)
+    
   cartNotif.parentElement.classList.remove('hidden')
   cartNotif.textContent = (parseInt(cartNotif.textContent) + 1) + ' baru!'
 }
@@ -346,7 +273,6 @@ function removeItem(el){
   const parent = el.parentElement
   removedPrice = parseInt(parent.children[0].children[2].textContent)
   totalPrice.textContent = parseInt(totalPrice.textContent) - removedPrice + 'k'
-  
   
   parent.dataset.orderCount = parseInt(parent.dataset.orderCount) -1
   if(parseInt(parent.dataset.orderCount) === 0){
@@ -361,41 +287,33 @@ function removeItem(el){
 function makeOrder(){
   const allOrderNode = cartItemList.children
   if(allOrderNode.length === 0){return}
+  
   let allOrderData = []
   let allPriceData = []
   
   for(i=0; i<allOrderNode.length; i+=2){
     current = allOrderNode[i]
     allOrderData.push(
-    (current.dataset.orderCount)
-    + ' ' + (current.children[0].children[1].textContent)
-    + ' ' + (current.id.split('-').slice(2)).join(' '))
-    
+      (current.dataset.orderCount)
+      + ' ' + (current.children[0].children[1].textContent)
+      + ' ' + (current.id.split('-').slice(2)).join(' ')
+    )
     allPriceData.push(current.children[0].children[2].textContent)
   }
     
   allOrderData = allOrderData.join('\n')
+  
     
-  
-  
-  let loop = true
-  let currentIndex = data.prefilledGform.indexOf('entry.')
-  let currentFocus = ''
   let newPrefilledGform = ''
-  let buffer = ''
   const startIndex = data.prefilledGform.indexOf("entry.")
   
   const firstEntryStartIndex = data.prefilledGform.indexOf('=', startIndex)
   const firstEntryEndIndex = data.prefilledGform.indexOf('&entry', startIndex)
-  
   const secondEntryStartIndex = data.prefilledGform.indexOf('=', firstEntryEndIndex)
-  //const secondEntryEndIndex = data.prefilledGform.indexOf('&entry', firstEntryEndIndex)
     
-  
-  //alert(data.prefilledGform.slice(firstEntryStartIndex+1, firstEntryEndIndex))
   newPrefilledGform = data.prefilledGform.slice(0, secondEntryStartIndex+1) + totalPrice.textContent // + data.prefilledGform.slice(secondEntryEndIndex, data.prefilledGform.length)
   newPrefilledGform = newPrefilledGform.slice(0, firstEntryStartIndex+1) + encodeURIComponent(allOrderData)  + newPrefilledGform.slice(firstEntryEndIndex, data.prefilledGform.length)
-  //alert(encodeURIComponent(allOrderData))
+  
   window.location.href = newPrefilledGform
 }
   
@@ -405,13 +323,14 @@ const main = document.getElementById("page-main")
 const footer = document.getElementById('page-footer')
 function toggleCart(){
   if(main.classList.contains('hidden')){
-  main.classList.remove("hidden")
-  footer.classList.remove('hidden')
-  shoppingCart.classList.add("hidden")
-  menuList.scrollIntoView()
-  window.scrollBy(0,-120)
-  return
+    main.classList.remove("hidden")
+    footer.classList.remove('hidden')
+    shoppingCart.classList.add("hidden")
+    menuList.scrollIntoView()
+    window.scrollBy(0,-120)
+    return
   }
+  
   main.classList.add("hidden")
   footer.classList.add('hidden')
   shoppingCart.classList.remove("hidden")
