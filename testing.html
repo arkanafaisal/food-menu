@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hello, World!</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+  </style>
+</head>
+<body class="font-sans">
+  <nav class="bg-[#F7F7F7] sticky top-0 py-1 px-6 shadow-md flex justify-between items-center">
+    <div class="flex gap-1 items-center">
+      <svg class="h-12" fill="#FFC107" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" stroke="#FFC107" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M3,7C3,4.239,4.791,2,7,2s4,2.239,4,5a4.913,4.913,0,0,1-3,4.823V21a1,1,0,0,1-2,0V11.823A4.913,4.913,0,0,1,3,7ZM19,3V7H18V3a1,1,0,0,0-2,0V7H15V3a1,1,0,0,0-2,0V8a3,3,0,0,0,3,3V21a1,1,0,0,0,2,0V11a3,3,0,0,0,3-3V3a1,1,0,0,0-2,0Z"></path></g></svg>
+      <h1 class="text-3xl text-[#333333]">FaithFund</h1>
+    </div>
+    <div class="flex items-center">
+      <button class="relative" onclick="toggleCart()">
+        <svg class="h-10" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFC107"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11.5 7L13.5 9M13.5 9L15.5 7M13.5 9V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFC107" stroke-width="1.9200000000000004" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        <div class="hidden absolute translate-y-1/2 -translate-x-1/2 bottom-0 left-1/2">
+          <span id="cart-notification" class="inline-block whitespace-nowrap px-[3px] rounded-xl bg-red-500 text-white text-xs">0 baru!</span>
+        </div>
+      </button>
+    </div>
+  </nav>
+  
+  
+  <div id="shopping-cart" class="hidden p-2 flex flex-col justify-center py-4">
+    <button class="py-1 px-2 bg-[#E0E0E0] rounded-md w-fit mx-auto" onclick="toggleCart()">kembali ke menu</button>
+    
+    <div id="cart-container" class="border-1 mt-5 py-2 px-3 bg-black/4 rounded-md">
+      <h1 class="text-center text-2xl mb-5">Keranjang Belanja</h1>
+      <h2 class="text-xl">barang:</h2>
+      <ul id="cart-item-list" class="flex flex-col gap-2 min-h-[200px]">
+        <!-- cart-item-list-node -->
+        
+      </ul>
+      <div id="total-price-container" class="flex gap-2 text-xl">
+        <h2>total harga: </h2>
+        <h2 id="total-price">0</h2>
+      </div>
+    </div>
+    <button class="bg-green-500 w-full text-center text-xl py-1 mt-3 rounded-lg" onclick='makeOrder()'>Buatkan Pesanan</button>
+    
+    <textarea id='textarea'></textarea>
+  </div>
+  
+  
+  <main id="page-main" class="mt-1">
+    <section class="flex flex-col items-center px-3 mt-6 py-8" id="welcome">
+      <h1 class="text-5xl ml-3 text-[#333333]"> Laper? Cek Danus Dulu 😋</h1>
+      
+      <svg class="h-64" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#FFC107" stroke="#FFC107" stroke-width="1.024"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  .st0{fill:#FFC107;}  </style> <g> <polygon class="st0" points="30.922,460.156 481.094,460.156 481.094,421.969 30.922,431 "></polygon> <polygon class="st0" points="30.922,499.641 481.094,508.688 481.094,470.484 30.922,470.484 "></polygon> <path class="st0" d="M153.094,340.672v22.016c0,22.844,46.078,41.375,102.906,41.375s102.906-18.531,102.906-41.375v-22.016 C449.047,301.063,512,211,512,106.219C512,49.391,397.391,3.313,256,3.313C114.625,3.313,0,49.391,0,106.219 C0,211,62.969,301.063,153.094,340.672z M41.828,106.219c0-2.234,8.984-17.984,48.75-33.953 C133.469,55.031,193.75,45.141,256,45.141s122.531,9.891,165.438,27.125c39.75,15.969,48.734,31.719,48.734,33.953 s-8.984,17.969-48.734,33.953C378.531,157.406,318.25,167.297,256,167.297s-122.531-9.891-165.422-27.125 C50.813,124.188,41.828,108.453,41.828,106.219z"></path> </g> </g></svg>
+      
+    </section>
+    
+    <section id="menu" class="flex flex-col px-3 py-6 bg-[#E0E0E0]">
+      <h2 class="text-3xl ml-3 mb-3">Menu:</h2>
+      
+      <ul id="menu-list" class="flex flex-col items-center gap-3">
+        <!-- menu-list-node -->
+      </ul>
+    </section>
+  </main>
+  
+  
+  <footer id="page-footer" class="h-screen">
+    
+  </footer>
+  
+  
+  <template id="template-node">
+    
+    <li id="menu-list-node" class="hidden content-box bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
+      <img id="image" class="w-32 h-32 mx-auto" alt="tidak ada gambar">
+      <h3 id="name" class="text-3xl mb-1 text-center"></h3>
+      <div id="detail" class="additional-info overflow-hidden max-h-0 transition-all duration-300">
+        <div id="detail-text">
+          <h3 id="price" class="text-xl transition-colors duration-300 ease-out"></h3>
+          <h3 id="stock" class="text-xl"></h3>
+          <h3 id="read-menu-detail" class="hidden text-xl"></h3>
+          <div id="select-menu-detail" class="hidden flex gap-1 my-1">
+            <h3 class="text-xl"></h3>
+            <div class="selectable-detail-container flex flex-wrap gap-1">
+              <button id="selectable-detail-btn" class="hidden rounded-lg text-md px-1 bg-black/20 border-1"></button>
+            </div>
+          </div>   
+        </div>
+        <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2 rounded-sm" onclick="addOrder(this)">tambah ke keranjang</button>
+      </div>
+    </li>
+    
+    <li id="cart-item-list-node" class="hidden flex flex-row items-start flex-wrap justify-between">
+      <ul id="cart-item-detail-node" class="flex flex-grow flex-wrap max-w-[80%] gap-1">
+        <li id="same-order-total" class="border-1 border-black rounded-lg px-1 bg-black/50 text-white">1</li>
+        <li id="cart-item-name" class="border-1 border-[#FFC107] rounded-lg px-1 bg-[#FFC107]/50"></li>
+        <li id="cart-item-variant" class="border-1 border-red-500 rounded-lg px-1 bg-red-500/50"></li>
+        <li id="cart-item-extra" class="hidden border-1 border-green-500 rounded-lg px-1 bg-green-500/50"></li>
+      </ul>
+      <button class="px-1 h-fit border-1 border-black bg-black/50 rounded-lg text-white" onclick='removeItem(this)'>hapus</button>
+    </li>
+    
+  </template>
+
+  
+  
+<script src="./data/text/menu.js"></script>
+<script>
+const template = document.getElementById('template-node')
+
+getData()
+async function getData(){
+  const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
+  const response = await fetch(dataUrl)
+  let data = await response.text()
+  data = data.replace(/\r/g, '').split('\n')
+  
+  let dataJson = []
+  for(let i=1; i<data.length; i++){
+    let cleaned = data[i].split(',')
+    let dataObject = {}
+    dataObject.name = cleaned[0]
+    dataObject.stock = cleaned[1]
+    dataObject.image = 'https://i.imgur.com/cX6Tq65.jpeg'
+    //window.location.href = dataObject.image
+    let imgLinkStartId = cleaned[2].indexOf('/d/')
+    if(imgLinkStartId !== -1){
+      let imgLinkId = cleaned[2].slice(imgLinkStartId + 3, cleaned[2].indexOf('/view'))
+      let imgUrl = "https://drive.google.com/uc?export=view&id=" + imgLinkId
+      console.log(imgUrl)
+      dataObject.image = imgUrl
+      //window.location.href = imgUrl
+    }
+    dataObject.price = cleaned[3]
+    if(cleaned[3].indexOf('&')){dataObject.price = cleaned[3].split('&')}
+    
+    let extras = []
+    for(j=4; j<cleaned.length; j++){
+      if(cleaned[j] === '') continue
+      
+      let extra = cleaned[j].split('=')
+      dataObject[extra[0]] = (extra[1].replace(/\[|\]/g, '')).split('&')
+    }
+      
+    dataJson.push(dataObject)
+  }
+    
+  initiateData(dataJson)
+}
+  
+ 
+const menuList = document.getElementById("menu-list")
+const menuListNode = template.content.getElementById("menu-list-node")
+function initiateData(data){
+  data.forEach(menuData => {
+    const newNode = menuListNode.cloneNode(true)
+    newNode.onclick = () => {changeMenuSelected(newNode, event)}
+    newNode.classList.remove('hidden')
+  
+    const newNodeChildren = newNode.children
+    newNodeChildren[0].src = menuData.image
+    newNodeChildren[1].textContent = menuData.name
+    newNode.dataset['name'] = menuData.name
+  
+    const details = newNodeChildren[2]
+    const detailsChildren = details.children[0].children
+  
+    detailsChildren[1].textContent = "status: " + menuData.stock
+    detailsChildren[0].textContent = "harga: " + menuData.price[0]
+    newNode.dataset['price'] = menuData.price[0]
+  
+    const keys = Object.keys(menuData)
+    for(let i=4; i<keys.length; i++){
+      const newDetail = template.content.getElementById('select-menu-detail').cloneNode(true)
+      newDetail.classList.remove('hidden')
+      
+      newDetail.children[0].textContent = keys[i] + ': '
+      newDetailBtnContainer = newDetail.children[1]
+      newDetail.id = 'select-menu-detail-' + i
+    
+      for(let j=0; j<menuData[keys[i]].length; j++){
+        const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
+        newSelectableDetail.classList.remove('hidden')
+        
+        newSelectableDetail.textContent = menuData[keys[i]][j]
+        newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + keys[i] + '-' + j
+        newDetailBtnContainer.appendChild(newSelectableDetail)
+      
+        newSelectableDetail.onclick = () => {
+          let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
+          oldSelected.classList.remove('selected', 'bg-blue-500/50')
+          
+          newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
+          newNode.dataset['extra' + i] = newSelectableDetail.textContent
+          
+          if(i === 4 && menuData.price.length >= newSelectableDetail.id.at(-1)){
+            detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
+            newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
+            detailsChildren[0].classList.add('text-red-500')
+            setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
+          }
+        }
+      }
+      newDetailBtnContainer.children[1].classList.add('selected', 'bg-blue-500/50')
+      newNode.dataset['extra' + i] = menuData[keys[i]][0]
+ 
+      details.children[0].appendChild(newDetail)
+    }
+  
+    newNode.dataset.extraLength = keys.length
+    menuList.appendChild(newNode)
+  })
+  menuList.children[0].classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
+  const firstListDetail = menuList.children[0].children[2]
+  firstListDetail.style.maxHeight = firstListDetail.scrollHeight + 100 + "px"
+}
+
+
+function changeMenuSelected(newSelected, event) {
+  oldSelected = document.querySelector(".menu-selected")
+  if(oldSelected){
+    oldSelected.classList.remove('border-3', 'border-[#FFC107]', 'menu-selected')
+    oldSelected.children[2].style.maxHeight = 0
+  }
+  if(event.target.tagName !== 'BUTTON' && oldSelected === newSelected){return}
+  
+  newSelected.classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
+  const detail = newSelected.children[2]
+  detail.style.maxHeight = detail.scrollHeight + "px"
+}
+  
+  
+const cartItemList = document.getElementById("cart-item-list")
+const cartItemListNode = template.content.getElementById('cart-item-list-node')
+const cartNotif = document.getElementById("cart-notification")
+const totalPrice = document.getElementById('total-price')
+function addOrder(element){
+  const parent = element.parentElement
+  const rootParent = parent.parentElement
+  const itemDetail = parent.children[0].children
+  
+  const newItem = cartItemListNode.cloneNode(true)
+  newItem.classList.remove('hidden')
+  const children = newItem.children[0].children
+  
+  let itemSelectedData = parent.id + "-" + itemDetail[0].textContent.split(' ')[1] + "-"
+  children[1].textContent = rootParent.dataset['name']
+  children[2].textContent = rootParent.dataset['price']
+  totalPrice.textContent = parseInt(totalPrice.textContent) + parseInt(rootParent.dataset['price']) + 'k'
+  
+  const extraDetailNode = children[3]
+  for(i=4;i<rootParent.dataset.extraLength;i++){
+    const newDetail = extraDetailNode.cloneNode()
+    newDetail.classList.remove('hidden')
+    
+    
+    newDetail.textContent = rootParent.dataset['extra' + i]
+    itemSelectedData += (rootParent.dataset['extra' + i] + '-')
+    
+    newItem.children[0].appendChild(newDetail)
+  }
+    
+  const existItemList = document.getElementById(itemSelectedData)
+  if(existItemList){
+    existItemList.children[0].children[0].textContent = parseInt(existItemList.dataset.orderCount) + 1
+    existItemList.dataset.orderCount = parseInt(existItemList.dataset.orderCount) + 1
+
+    cartNotif.parentElement.classList.remove('hidden')
+    cartNotif.textContent = (parseInt(cartNotif.textContent) + 1) + ' baru!'
+    return
+  }  
+    
+  newItem.id = itemSelectedData
+  newItem.dataset.orderCount = 1
+  cartItemList.appendChild(newItem)
+  
+  const hr = document.createElement('hr')
+  cartItemList.appendChild(hr)
+    
+  cartNotif.parentElement.classList.remove('hidden')
+  cartNotif.textContent = (parseInt(cartNotif.textContent) + 1) + ' baru!'
+}
+  
+function removeItem(el){
+  const parent = el.parentElement
+  removedPrice = parseInt(parent.children[0].children[2].textContent)
+  totalPrice.textContent = parseInt(totalPrice.textContent) - removedPrice + 'k'
+  
+  parent.dataset.orderCount = parseInt(parent.dataset.orderCount) -1
+  if(parseInt(parent.dataset.orderCount) === 0){
+    parent.nextElementSibling.remove()
+    parent.remove()
+    return
+  }
+  
+  parent.children[0].children[0].textContent = parent.dataset.orderCount
+}
+  
+function makeOrder(){
+  const allOrderNode = cartItemList.children
+  if(allOrderNode.length === 0){return}
+  
+  let allOrderData = []
+  let allPriceData = []
+  
+  for(i=0; i<allOrderNode.length; i+=2){
+    current = allOrderNode[i]
+    allOrderData.push(
+      (current.dataset.orderCount)
+      + ' ' + (current.children[0].children[1].textContent)
+      + ' ' + (current.id.split('-').slice(2)).join(' ')
+    )
+    allPriceData.push(current.children[0].children[2].textContent)
+  }
+    
+  allOrderData = allOrderData.join('\n')
+  
+    
+  let newPrefilledGform = ''
+  const startIndex = data.prefilledGform.indexOf("entry.")
+  
+  const firstEntryStartIndex = data.prefilledGform.indexOf('=', startIndex)
+  const firstEntryEndIndex = data.prefilledGform.indexOf('&entry', startIndex)
+  const secondEntryStartIndex = data.prefilledGform.indexOf('=', firstEntryEndIndex)
+    
+  newPrefilledGform = data.prefilledGform.slice(0, secondEntryStartIndex+1) + totalPrice.textContent // + data.prefilledGform.slice(secondEntryEndIndex, data.prefilledGform.length)
+  newPrefilledGform = newPrefilledGform.slice(0, firstEntryStartIndex+1) + encodeURIComponent(allOrderData)  + newPrefilledGform.slice(firstEntryEndIndex, data.prefilledGform.length)
+  
+  window.location.href = newPrefilledGform
+}
+  
+  
+const shoppingCart = document.getElementById("shopping-cart")
+const main = document.getElementById("page-main")
+const footer = document.getElementById('page-footer')
+function toggleCart(){
+  if(main.classList.contains('hidden')){
+    main.classList.remove("hidden")
+    footer.classList.remove('hidden')
+    shoppingCart.classList.add("hidden")
+    menuList.scrollIntoView()
+    window.scrollBy(0,-120)
+    return
+  }
+  
+  main.classList.add("hidden")
+  footer.classList.add('hidden')
+  shoppingCart.classList.remove("hidden")
+  cartNotif.parentElement.classList.add('hidden')
+  cartNotif.textContent = 0
+}
+</script>
+</body>
+</html>
