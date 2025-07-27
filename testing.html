@@ -74,7 +74,7 @@
   <template id="template-node">
     
     <li id="menu-list-node" class="hidden content-box bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
-      <img id="image" class="w-32 h-32 mx-auto" alt="tidak ada gambar">
+      <img id="image" class="max-w-full max-h-64 min-h-32 mx-auto" alt="tidak ada gambar">
       <h3 id="name" class="text-3xl mb-1 text-center"></h3>
       <div id="detail" class="additional-info overflow-hidden max-h-0 transition-all duration-300">
         <div id="detail-text">
@@ -123,15 +123,13 @@ async function getData(){
     let dataObject = {}
     dataObject.name = cleaned[0]
     dataObject.stock = cleaned[1]
-    dataObject.image = 'https://i.imgur.com/cX6Tq65.jpeg'
-    //window.location.href = dataObject.image
+    dataObject.image = '' //'https://drive.google.com/drive-viewer/AKGpihYloLRkZWsjVRyl_pPFxi_FCxxprt3UzFCDA3J5gt6vLmgFWX7vbKLEdeXJfhHWSg42SPqdsHgTZbpKptoDPIK8Y52wWtcQw60=s1600-rw-v1'   //'https://i.imgur.com/cX6Tq65.jpeg'
     let imgLinkStartId = cleaned[2].indexOf('/d/')
     if(imgLinkStartId !== -1){
       let imgLinkId = cleaned[2].slice(imgLinkStartId + 3, cleaned[2].indexOf('/view'))
-      let imgUrl = "https://drive.google.com/uc?export=view&id=" + imgLinkId
-      console.log(imgUrl)
+      //"https://drive.google.com/uc?export=view&id=" + imgLinkId
+      let imgUrl = 'https://drive.google.com/thumbnail?id=' + imgLinkId
       dataObject.image = imgUrl
-      //window.location.href = imgUrl
     }
     dataObject.price = cleaned[3]
     if(cleaned[3].indexOf('&')){dataObject.price = cleaned[3].split('&')}
@@ -161,6 +159,7 @@ function initiateData(data){
   
     const newNodeChildren = newNode.children
     newNodeChildren[0].src = menuData.image
+    newNodeChildren[0].alt = 'gambar ' + menuData.name
     newNodeChildren[1].textContent = menuData.name
     newNode.dataset['name'] = menuData.name
   
@@ -195,7 +194,7 @@ function initiateData(data){
           newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
           newNode.dataset['extra' + i] = newSelectableDetail.textContent
           
-          if(i === 4 && menuData.price.length >= newSelectableDetail.id.at(-1)){
+          if(i === 4 && menuData.price.length > 1 && menuData.price.length > newSelectableDetail.id.at(-1)){
             detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
             newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
             detailsChildren[0].classList.add('text-red-500')
