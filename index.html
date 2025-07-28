@@ -11,10 +11,10 @@
   </style>
 </head>
 <body class="font-sans">
-  <nav class="bg-[#F7F7F7] sticky top-0 py-1 px-6 shadow-md flex justify-between items-center">
+  <nav class="bg-[#F7F7F7] sticky top-0 py-1 px-6 shadow-md flex justify-between items-center z-100">
     <div class="flex gap-1 items-center">
       <svg class="h-12" fill="#FFC107" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" stroke="#FFC107" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M3,7C3,4.239,4.791,2,7,2s4,2.239,4,5a4.913,4.913,0,0,1-3,4.823V21a1,1,0,0,1-2,0V11.823A4.913,4.913,0,0,1,3,7ZM19,3V7H18V3a1,1,0,0,0-2,0V7H15V3a1,1,0,0,0-2,0V8a3,3,0,0,0,3,3V21a1,1,0,0,0,2,0V11a3,3,0,0,0,3-3V3a1,1,0,0,0-2,0Z"></path></g></svg>
-      <h1 class="text-3xl text-[#333333]">FaithFund</h1>
+      <h1 id='company' class="text-2xl text-[#333333]"></h1>
     </div>
     <div class="flex items-center">
       <button class="relative" onclick="toggleCart()">
@@ -49,19 +49,20 @@
   
   
   <main id="page-main" class="mt-1">
-    <section class="flex flex-col items-center px-3 mt-6 py-8" id="welcome">
-      <h1 class="text-5xl ml-3 text-[#333333]"> Laper? Cek Danus Dulu 😋</h1>
+    <section class="flex flex-col items-center px-3 mt-6 py-8" id="hero-section">
+      <h1 id="hero-text" class="text-5xl ml-3 text-[#333333] mb-3"> Laper? Cek Danus Dulu 😋</h1>
       
-      <svg class="h-64" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#FFC107" stroke="#FFC107" stroke-width="1.024"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  .st0{fill:#FFC107;}  </style> <g> <polygon class="st0" points="30.922,460.156 481.094,460.156 481.094,421.969 30.922,431 "></polygon> <polygon class="st0" points="30.922,499.641 481.094,508.688 481.094,470.484 30.922,470.484 "></polygon> <path class="st0" d="M153.094,340.672v22.016c0,22.844,46.078,41.375,102.906,41.375s102.906-18.531,102.906-41.375v-22.016 C449.047,301.063,512,211,512,106.219C512,49.391,397.391,3.313,256,3.313C114.625,3.313,0,49.391,0,106.219 C0,211,62.969,301.063,153.094,340.672z M41.828,106.219c0-2.234,8.984-17.984,48.75-33.953 C133.469,55.031,193.75,45.141,256,45.141s122.531,9.891,165.438,27.125c39.75,15.969,48.734,31.719,48.734,33.953 s-8.984,17.969-48.734,33.953C378.531,157.406,318.25,167.297,256,167.297s-122.531-9.891-165.422-27.125 C50.813,124.188,41.828,108.453,41.828,106.219z"></path> </g> </g></svg>
+      <svg id="hero-image" class="h-64" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xml:space="preserve" fill="#FFC107" stroke="#FFC107" stroke-width="1.024"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  .st0{fill:#FFC107;}  </style> <g> <polygon class="st0" points="30.922,460.156 481.094,460.156 481.094,421.969 30.922,431 "></polygon> <polygon class="st0" points="30.922,499.641 481.094,508.688 481.094,470.484 30.922,470.484 "></polygon> <path class="st0" d="M153.094,340.672v22.016c0,22.844,46.078,41.375,102.906,41.375s102.906-18.531,102.906-41.375v-22.016 C449.047,301.063,512,211,512,106.219C512,49.391,397.391,3.313,256,3.313C114.625,3.313,0,49.391,0,106.219 C0,211,62.969,301.063,153.094,340.672z M41.828,106.219c0-2.234,8.984-17.984,48.75-33.953 C133.469,55.031,193.75,45.141,256,45.141s122.531,9.891,165.438,27.125c39.75,15.969,48.734,31.719,48.734,33.953 s-8.984,17.969-48.734,33.953C378.531,157.406,318.25,167.297,256,167.297s-122.531-9.891-165.422-27.125 C50.813,124.188,41.828,108.453,41.828,106.219z"></path> </g> </g></svg>
       
     </section>
     
-    <section id="menu" class="flex flex-col px-3 py-6 bg-[#E0E0E0]">
+    <section id="menu" class="flex flex-col px-3 py-6 bg-[#E0E0E0] min-h-100">
       <h2 class="text-3xl ml-3 mb-3">Menu:</h2>
       
       <ul id="menu-list" class="flex flex-col items-center gap-3">
         <!-- menu-list-node -->
       </ul>
+      <h2 id="loading-indicator" class="w-full text-center text-xl">loading...</h2>
     </section>
   </main>
   
@@ -73,8 +74,8 @@
   
   <template id="template-node">
     
-    <li id="menu-list-node" class="hidden content-box bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
-      <img id="image" class="w-32 h-32 mx-auto">
+    <li id="menu-list-node" class="hidden bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
+      <img id="image" class="max-w-[calc(100%-20px)] max-h-64 min-h-32 mx-auto" alt="tidak ada gambar">
       <h3 id="name" class="text-3xl mb-1 text-center"></h3>
       <div id="detail" class="additional-info overflow-hidden max-h-0 transition-all duration-300">
         <div id="detail-text">
@@ -92,6 +93,11 @@
       </div>
     </li>
     
+    <li id="error-menu" class="bg-white px-3 py-2 flex flex-col items-center rounded-lg">
+      <h1 class="text-red-500 mb-3">error</h1>
+      <button class="bg-blue-500 text-white px-2 py-1 w-fit">try again</button>
+    </li>
+    
     <li id="cart-item-list-node" class="hidden flex flex-row items-start flex-wrap justify-between">
       <ul id="cart-item-detail-node" class="flex flex-grow flex-wrap max-w-[80%] gap-1">
         <li id="same-order-total" class="border-1 border-black rounded-lg px-1 bg-black/50 text-white">1</li>
@@ -106,26 +112,72 @@
 
   
   
-<script src="./data/text/menu.js"></script>
+  
+
 <script>
 const template = document.getElementById('template-node')
+document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
+document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
 
+  
+  
+const essentialData = {}
 getData()
 async function getData(){
   const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
-  const response = await fetch(dataUrl)
-  let data = await response.text()
-  data = data.replace(/\r/g, '').split('\n')
+  let data, errorMessage
+  try{
+    const response = await fetch(dataUrl)
+    data = await response.text()
+  } catch(error){
+    errorMessage = error.message
+  }
   
+  document.getElementById('loading-indicator').classList.add('hidden')
+  if(errorMessage){
+    const errorNode = template.content.getElementById('error-menu').cloneNode(true)
+    errorNode.children[0].textContent = errorMessage
+    errorNode.children[1].onclick = ()=>{
+      document.getElementById('loading-indicator').classList.remove('hidden')
+      document.getElementById('error-menu').remove()
+      getData()
+    }
+    menuList.appendChild(errorNode)
+    return
+  }
+  
+  
+  data = data.replace(/\r/g, '').split('\n')
   let dataJson = []
-  for(let i=1; i<data.length; i++){
+  for(let i=0; i<data.length; i++){
+    if(i === 1){
+      let cleaned = data[i].split(',')
+      essentialData.company = cleaned[0]
+      essentialData.slogan = cleaned[1]
+      essentialData.prefilledGform = cleaned[2]
+      
+      localStorage.setItem('company', cleaned[0])
+      localStorage.setItem('slogan', cleaned[1])
+      document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
+      document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
+
+      
+      continue
+    }
+    if(i < 4){continue}
+    
     let cleaned = data[i].split(',')
     let dataObject = {}
     dataObject.name = cleaned[0]
     dataObject.stock = cleaned[1]
-    dataObject.image = cleaned[2]
-    dataObject.price = cleaned[3]
-    if(cleaned[3].indexOf('&')){dataObject.price = cleaned[3].split('&')}
+    dataObject.image = '' 
+    let imgLinkStartId = cleaned[2].indexOf('/d/')
+    if(imgLinkStartId !== -1){
+      let imgLinkId = cleaned[2].slice(imgLinkStartId + 3, cleaned[2].indexOf('/view'))
+      let imgUrl = 'https://drive.google.com/thumbnail?id=' + imgLinkId
+      dataObject.image = imgUrl
+    }
+    dataObject.price = cleaned[3].split('&')
     
     let extras = []
     for(j=4; j<cleaned.length; j++){
@@ -137,6 +189,11 @@ async function getData(){
       
     dataJson.push(dataObject)
   }
+    dataJson.sort((a,b) => {
+      if(a.stock === 'habis' && b.stock === 'tersedia'){return 1}
+      if(a.stock === 'tersedia' && b.stock === 'habis'){return -1}
+      return 0
+    })
     
   initiateData(dataJson)
 }
@@ -144,22 +201,35 @@ async function getData(){
  
 const menuList = document.getElementById("menu-list")
 const menuListNode = template.content.getElementById("menu-list-node")
+let menuListNodeWidth = (menuList.offsetWidth * 0.7) + 'px'
+console.log(menuListNodeWidth)
 function initiateData(data){
+  const fragment = document.createDocumentFragment()
   data.forEach(menuData => {
     const newNode = menuListNode.cloneNode(true)
     newNode.onclick = () => {changeMenuSelected(newNode, event)}
     newNode.classList.remove('hidden')
   
     const newNodeChildren = newNode.children
+    newNodeChildren[0].src = menuData.image
+    newNodeChildren[0].alt = 'gambar ' + menuData.name
+    newNodeChildren[0].style.maxWidth = menuListNodeWidth
     newNodeChildren[1].textContent = menuData.name
     newNode.dataset['name'] = menuData.name
   
     const details = newNodeChildren[2]
     const detailsChildren = details.children[0].children
   
-    detailsChildren[1].textContent = "status: " + menuData.stock
+    detailsChildren[1].textContent = "stok: " + menuData.stock
     detailsChildren[0].textContent = "harga: " + menuData.price[0]
     newNode.dataset['price'] = menuData.price[0]
+    
+    if(menuData.stock === 'habis'){
+      newNode.classList.add('opacity-50')
+      details.children[1].classList.remove('bg-green-500')
+      details.children[1].classList.add('bg-gray-400')
+      details.children[1].onclick = null
+    }
   
     const keys = Object.keys(menuData)
     for(let i=4; i<keys.length; i++){
@@ -185,7 +255,7 @@ function initiateData(data){
           newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
           newNode.dataset['extra' + i] = newSelectableDetail.textContent
           
-          if(i === 4 && menuData.price.length >= newSelectableDetail.id.at(-1)){
+          if(i === 4 && menuData.price.length > 1 && menuData.price.length > newSelectableDetail.id.at(-1)){
             detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
             newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
             detailsChildren[0].classList.add('text-red-500')
@@ -200,8 +270,10 @@ function initiateData(data){
     }
   
     newNode.dataset.extraLength = keys.length
-    menuList.appendChild(newNode)
+    fragment.appendChild(newNode)
   })
+  
+  menuList.appendChild(fragment)
   menuList.children[0].classList.add('border-3', 'border-[#FFC107]', 'menu-selected')
   const firstListDetail = menuList.children[0].children[2]
   firstListDetail.style.maxHeight = firstListDetail.scrollHeight + 100 + "px"
@@ -309,14 +381,14 @@ function makeOrder(){
   
     
   let newPrefilledGform = ''
-  const startIndex = data.prefilledGform.indexOf("entry.")
+  const startIndex = essentialData.prefilledGform.indexOf("entry.")
   
-  const firstEntryStartIndex = data.prefilledGform.indexOf('=', startIndex)
-  const firstEntryEndIndex = data.prefilledGform.indexOf('&entry', startIndex)
-  const secondEntryStartIndex = data.prefilledGform.indexOf('=', firstEntryEndIndex)
+  const firstEntryStartIndex = essentialData.prefilledGform.indexOf('=', startIndex)
+  const firstEntryEndIndex = essentialData.prefilledGform.indexOf('&entry', startIndex)
+  const secondEntryStartIndex = essentialData.prefilledGform.indexOf('=', firstEntryEndIndex)
     
-  newPrefilledGform = data.prefilledGform.slice(0, secondEntryStartIndex+1) + totalPrice.textContent // + data.prefilledGform.slice(secondEntryEndIndex, data.prefilledGform.length)
-  newPrefilledGform = newPrefilledGform.slice(0, firstEntryStartIndex+1) + encodeURIComponent(allOrderData)  + newPrefilledGform.slice(firstEntryEndIndex, data.prefilledGform.length)
+  newPrefilledGform = essentialData.prefilledGform.slice(0, secondEntryStartIndex+1) + totalPrice.textContent // + data.prefilledGform.slice(secondEntryEndIndex, data.prefilledGform.length)
+  newPrefilledGform = newPrefilledGform.slice(0, firstEntryStartIndex+1) + encodeURIComponent(allOrderData)  + newPrefilledGform.slice(firstEntryEndIndex, essentialData.prefilledGform.length)
   
   window.location.href = newPrefilledGform
 }
