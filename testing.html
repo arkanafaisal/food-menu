@@ -225,7 +225,7 @@ function initiateEssentialData(data){
   document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
   document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
-  if(localStorage.getItem('noticeText').trim !== ''){
+  if(localStorage.getItem('noticeText').trim() !== ''){
     document.getElementById('notice-text').classList.remove('hidden')
   }
   
