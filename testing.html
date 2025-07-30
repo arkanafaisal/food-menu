@@ -123,7 +123,7 @@
     
     <li id="contact-node" class="shrink-0">
       <button class="bg-green-500 w-fit px-1 rounded-2xl flex items-center">
-        <img class="h-6 my-auto" src="./data/image/whatsapp.svg"><span class="text-black/80 text-lg inline-block">fadhil</span>
+        <img class="h-6 my-auto" src="./data/images/whatsapp.svg"><span class="text-black/80 text-lg inline-block">fadhil</span>
       </button>
     </li>
     
@@ -217,27 +217,21 @@ async function mainFunction(){
 }
   
 function initiateEssentialData(data){
-alert(1)
   if(data !== undefined){
-    alert(JSON.stringify(data))
     localStorage.setItem('company', data.company)
     localStorage.setItem('slogan', data.slogan)
     localStorage.setItem('noticeText', data.noticeText)
   }
-  
- alert(2) 
+
   document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Makan Apa? Pesan Sekarang!'
  
-alert(3) 
   document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
   if(localStorage.getItem('noticeText') && localStorage.getItem('noticeText').trim() !== ''){
-alert(3.5)
     document.getElementById('notice-text').parentElement.classList.remove('hidden')
   }
   
   if(data !== undefined && data.contactPerson[0] !== ''){
-alert(4)
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
       newNode.children[0].children[1].textContent = item[0]
@@ -246,7 +240,6 @@ alert(4)
         window.open(linkWa, '_blank')
       }
       
-     alert(5)
      document.getElementById('contact-list').appendChild(newNode)
     })
   }
