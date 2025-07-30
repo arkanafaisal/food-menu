@@ -135,6 +135,7 @@
 <script>
 const template = document.getElementById('template-node')
 
+alert('starting mainFunction')
 
 
   
@@ -148,8 +149,11 @@ async function mainFunction(){
   let data, errorMessage
   try{
     const response = await fetch(dataUrl)
+    alert(response.ok)
     data = await response.text()
+    alert(data)
     data = Papa.parse(data).data
+    alert(JSON.stringify(data[1]))
   } catch(error){
     errorMessage = error.message
   }
