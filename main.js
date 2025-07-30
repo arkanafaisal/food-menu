@@ -1,5 +1,3 @@
-alert('debug 4.3')
-
 const template = document.getElementById('template-node')
 
 
@@ -99,6 +97,7 @@ function initiateEssentialData(data){
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
       newNode.children[0].children[1].textContent = item[0]
+      if(item[1].trim() === '') return 
       newNode.children[0].onclick = () => {
         const linkWa = 'https://wa.me/' + item[1]
         window.open(linkWa, '_blank')
