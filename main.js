@@ -136,7 +136,7 @@ function initiateMainData(data){
       newNode.classList.add('opacity-50')
       const button = nodeChildren[2].children[1]
       button.classList.remove('bg-green-500')
-      button.classList.add('bg-gray-400')
+      button.classList.add('bg-green-500/30')
       button.onclick = null
     }
   
