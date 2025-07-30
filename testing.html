@@ -215,7 +215,7 @@ async function mainFunction(){
   
 function initiateEssentialData(data){
 alert(1)
-  if(data){
+  if(data !== undefined){
     alert(JSON.stringify(data))
     localStorage.setItem('company', data.company)
     localStorage.setItem('slogan', data.slogan)
@@ -223,7 +223,7 @@ alert(1)
   }
   
  alert(2) document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
-  document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
+  document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Makan Apa? Pesan Sekarang!'
  
 alert(3) document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
   if(localStorage.getItem('noticeText').trim() !== ''){
@@ -231,7 +231,7 @@ alert(3.5)
     document.getElementById('notice-text').parentElement.classList.remove('hidden')
   }
   
-  if(data && data.contactPerson[0] !== ''){
+  if(data !== undefined && data.contactPerson[0] !== ''){
 alert(4)
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
