@@ -1,0 +1,134 @@
+/* Background Colors */
+.bg-\[\#E0E0E0\] { background-color: #E0E0E0; }
+.bg-\[\#F7F7F7\] { background-color: #F7F7F7; }
+.bg-black\/4     { background-color: rgba(0, 0, 0, 0.04); }
+.bg-black\/20    { background-color: rgba(0, 0, 0, 0.2); }
+.bg-black\/50    { background-color: rgba(0, 0, 0, 0.5); }
+.bg-blue-500     { background-color: #3B82F6; }
+.bg-green-500    { background-color: #22C55E; }
+.bg-red-500      { background-color: #EF4444; }
+.bg-white        { background-color: #FFFFFF; }
+
+/* Borders */
+.border-1          { border-width: 1px; }
+.border-black      { border-color: #000000; }
+.border-red-500    { border-color: #EF4444; }
+.border-green-500  { border-color: #22C55E; }
+.border-\[\#FFC107\] { border-color: #FFC107; }
+
+/* Flexbox */
+.flex        { display: flex; }
+.flex-col    { flex-direction: column; }
+.flex-grow   { flex-grow: 1; }
+.flex-row    { flex-direction: row; }
+.flex-wrap   { flex-wrap: wrap; }
+
+/* Font */
+.font-sans { font-family: sans-serif; }
+
+/* Gap */
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+
+/* Height */
+.h-6     { height: 1.5rem; }
+.h-10    { height: 2.5rem; }
+.h-12    { height: 3rem; }
+.h-fit   { height: fit-content; }
+
+/* Hidden */
+.hidden { display: none; }
+
+/* Positioning */
+.bottom-0     { bottom: 0; }
+.left-1\/2    { left: 50%; }
+.top-0        { top: 0; }
+.relative     { position: relative; }
+.sticky       { position: sticky; }
+
+/* Translate */
+.translate-x-1\/2 { transform: translateX(50%); }
+.translate-y-1\/2 { transform: translateY(50%); }
+
+/* Text */
+.text-black\/80       { color: rgba(0, 0, 0, 0.8); }
+.text-red-500         { color: #EF4444; }
+.text-white           { color: #FFFFFF; }
+.text-lg              { font-size: 1.125rem; }
+.text-md              { font-size: 1rem; }
+.text-sm              { font-size: 0.875rem; }
+.text-xl              { font-size: 1.25rem; }
+.text-2xl             { font-size: 1.5rem; }
+.text-3xl             { font-size: 1.875rem; }
+.text-5xl             { font-size: 3rem; }
+.text-center          { text-align: center; }
+.text-\[\#333333\]    { color: #333333; }
+.text-\[\#FFC107\]\/50 { color: rgba(255, 193, 7, 0.5); }
+
+/* Margin & Padding */
+.mb-1  { margin-bottom: 0.25rem; }
+.mb-3  { margin-bottom: 0.75rem; }
+.mb-5  { margin-bottom: 1.25rem; }
+.mt-1  { margin-top: 0.25rem; }
+.mt-2  { margin-top: 0.5rem; }
+.mt-3  { margin-top: 0.75rem; }
+.mt-5  { margin-top: 1.25rem; }
+.ml-3  { margin-left: 0.75rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-1  { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+
+.p-2     { padding: 0.5rem; }
+.px-1    { padding-left: 0.25rem; padding-right: 0.25rem; }
+.px-2    { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-3    { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-5    { padding-left: 1.25rem; padding-right: 1.25rem; }
+.px-\[3px\] { padding-left: 3px; padding-right: 3px; }
+.py-1    { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-2    { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-3    { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4    { padding-top: 1rem; padding-bottom: 1rem; }
+
+/* Overflow */
+.overflow-hidden   { overflow: hidden; }
+.overflow-x-auto   { overflow-x: auto; }
+
+/* Max/Min Width/Height */
+.max-h-0                 { max-height: 0; }
+.max-h-64                { max-height: 16rem; }
+.max-w-\[70\%\]          { max-width: 70%; }
+.max-w-\[80\%\]          { max-width: 80%; }
+.max-w-\[calc\(100\%-20px\)\] { max-width: calc(100% - 20px); }
+
+.min-h-32       { min-height: 8rem; }
+.min-h-\[200px\] { min-height: 200px; }
+
+/* Width */
+.w-fit   { width: fit-content; }
+.w-full  { width: 100%; }
+.w-\[90\%\] { width: 90%; }
+
+/* Box Shadow */
+.shadow-md { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+
+/* Flex Item */
+.shrink-0 { flex-shrink: 0; }
+
+/* Z-index */
+.z-100 { z-index: 100; }
+
+/* Border Radius */
+.rounded-md  { border-radius: 0.375rem; }
+.rounded-lg  { border-radius: 0.5rem; }
+.rounded-xl  { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+
+/* Justify and Align */
+.items-center { align-items: center; }
+.items-start  { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center  { justify-content: center; }
+
+/* Transitions */
+.transition-all    { transition: all 0.3s ease; }
+.transition-colors { transition: color 0.3s ease, background-color 0.3s ease; }
