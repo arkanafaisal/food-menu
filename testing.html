@@ -143,7 +143,7 @@ const essentialData = {}
 mainFunction()
 
 async function mainFunction(){
-  //initiateEssentialData()
+  initiateEssentialData()
   
   const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
   let data, errorMessage
@@ -179,7 +179,7 @@ async function mainFunction(){
       essentialData.contactPerson = current[3].split(',').map(val => val.trim().replace(/\)/g, '').split('('))
       essentialData.noticeText = current[4]
       
-      //initiateEssentialData(essentialData)
+      initiateEssentialData(essentialData)
       continue
     }
     if(i < 4){continue}
@@ -216,9 +216,7 @@ async function mainFunction(){
 }
   
 function initiateEssentialData(data){
-return
 alert(1)
-return
   if(data !== undefined){
     alert(JSON.stringify(data))
     localStorage.setItem('company', data.company)
@@ -226,7 +224,8 @@ return
     localStorage.setItem('noticeText', data.noticeText)
   }
   
- alert(2) document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
+ alert(2) 
+  document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Makan Apa? Pesan Sekarang!'
  
 alert(3) document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
