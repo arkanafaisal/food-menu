@@ -143,16 +143,13 @@ mainFunction()
 
 async function mainFunction(){
   initiateEssentialData()
-  alert('start fetching')
   
   const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
   let data, errorMessage
   try{
     const response = await fetch(dataUrl)
     data = await response.text()
-    alert('fetching success')
     data = Papa.parse(data).data
-    alert('parsing succes')
   } catch(error){
     errorMessage = error.message
   }
@@ -218,15 +215,14 @@ async function mainFunction(){
 }
   
 function initiateEssentialData(data){
+  return
   if(data){
-    alert('setting data')
-    
     localStorage.setItem('company', data.company)
     localStorage.setItem('slogan', data.slogan)
     localStorage.setItem('noticeText', data.noticeText)
   }
   
-alert('setting hero-section') document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
+  document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
   document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
   if(localStorage.getItem('noticeText').trim() !== ''){
@@ -234,7 +230,6 @@ alert('setting hero-section') document.getElementById('company').textContent = l
   }
   
   if(data && data.contactPerson[0] !== ''){
-    alert('setting contact person')
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
       newNode.children[0].children[1].textContent = item[0]
