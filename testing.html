@@ -58,7 +58,7 @@
     </section>
     
     <section id="menu" class="flex flex-col px-3 py-6 bg-[#E0E0E0] min-h-100">
-      <div id="notice-container" class="px-5 py-2 bg-white max-w-[70%] mx-auto rounded-xl mb-3">
+      <div id="notice-container" class="hidden px-5 py-2 bg-white max-w-[70%] mx-auto rounded-xl mb-3">
         <h2 id="notice-header" class="text-xl text-center text-red-500 mb-1">Notice!</h2>
         <p id="notice-text" class="text-sm text-center mx-auto">blablabla blu blu blu lorem ipsum dolores</p>
       </div>
@@ -226,7 +226,7 @@ function initiateEssentialData(data){
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
   document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
   if(localStorage.getItem('noticeText').trim() !== ''){
-    document.getElementById('notice-text').classList.remove('hidden')
+    document.getElementById('notice-text').parentElement.classList.remove('hidden')
   }
   
   if(data && data.contactPerson[0] !== ''){
