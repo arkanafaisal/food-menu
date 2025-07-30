@@ -99,7 +99,7 @@ function initiateEssentialData(data){
       newNode.children[0].children[1].textContent = item[0]
       if(!item[1] || item[1].trim() === '') return 
       newNode.children[0].onclick = () => {
-        const linkWa = 'https://wa.me/' + item[1] + '?text=' + 'permisi%20kak%20nama...%0A'
+        const linkWa = 'https://wa.me/' + item[1] + '?text=' + 'permisi%20kak%20' + item[0] + '...%0A'
         window.open(linkWa, '_blank')
       }
       
