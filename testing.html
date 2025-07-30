@@ -135,8 +135,6 @@
 <script>
 const template = document.getElementById('template-node')
 
-alert('starting mainFunction')
-
 
   
 const essentialData = {}
@@ -149,11 +147,8 @@ async function mainFunction(){
   let data, errorMessage
   try{
     const response = await fetch(dataUrl)
-    alert(response.ok)
     data = await response.text()
-    alert(data)
     data = Papa.parse(data).data
-    alert(JSON.stringify(data[1]))
   } catch(error){
     errorMessage = error.message
   }
@@ -219,21 +214,25 @@ async function mainFunction(){
 }
   
 function initiateEssentialData(data){
-  return
+  alert(JSON.stringify(data))
+alert(1)
   if(data){
     localStorage.setItem('company', data.company)
     localStorage.setItem('slogan', data.slogan)
     localStorage.setItem('noticeText', data.noticeText)
   }
   
-  document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
+ alert(2) document.getElementById('company').textContent = localStorage.getItem('company') || 'YourFood'
   document.getElementById('hero-text').textContent = localStorage.getItem('slogan') || 'Nanti Mau Makan Apa? Pesan Sekarang!'
-  document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
+ 
+alert(3) document.getElementById('notice-text').textContent = localStorage.getItem('noticeText')
   if(localStorage.getItem('noticeText').trim() !== ''){
+alert(3.5)
     document.getElementById('notice-text').parentElement.classList.remove('hidden')
   }
   
   if(data && data.contactPerson[0] !== ''){
+alert(4)
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
       newNode.children[0].children[1].textContent = item[0]
@@ -242,7 +241,7 @@ function initiateEssentialData(data){
         window.open(linkWa, '_blank')
       }
       
-      document.getElementById('contact-list').appendChild(newNode)
+     alert(5) document.getElementById('contact-list').appendChild(newNode)
     })
   }
 }
