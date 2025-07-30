@@ -150,7 +150,9 @@ async function mainFunction(){
   try{
     const response = await fetch(dataUrl)
     data = await response.text()
+    alert('fetching success')
     data = Papa.parse(data).data
+    alert('parsing succes')
   } catch(error){
     errorMessage = error.message
   }
