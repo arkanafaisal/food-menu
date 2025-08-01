@@ -8,7 +8,7 @@ mainFunction()
 async function mainFunction(){
   initiateEssentialData()
 
-  const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv"
+  const dataUrl = "https://docs.google.com/spreadsheets/d/1HnxPabYY0sNdeSYl8dzEEHXCg-9f0Royk3DK0s_uDWo/export?format=csv" + "&_=" + Date.now()
   let data, errorMessage
   try{
     const response = await fetch(dataUrl)
@@ -116,6 +116,7 @@ let menuListNodeWidth = (menuList.offsetWidth * 0.7) + 'px'
 function initiateMainData(data){
   const fragment = document.createDocumentFragment()
   data.forEach(menuData => {
+    if(menuData.stock === 'sembunyikan') return
     const newNode = menuListNode.cloneNode(true)
     newNode.onclick = () => {changeMenuSelected(newNode, event)}
     newNode.classList.remove('hidden')
@@ -128,7 +129,7 @@ function initiateMainData(data){
     newNode.dataset['name'] = menuData.name
 
     const detailsChildren = newNode.querySelector('#detail-text').children
-    detailsChildren[1].textContent = "statud: " + menuData.stock
+    detailsChildren[1].textContent = "status: " + menuData.stock
     detailsChildren[0].textContent = "harga: " + menuData.price[0]
     newNode.dataset['price'] = menuData.price[0]
 
@@ -142,7 +143,6 @@ function initiateMainData(data){
 
     const keys = Object.keys(menuData)
     for(let i=4; i<keys.length; i++){
-      console.log(menuData[keys[i]][1])
       if(!menuData[keys[i]][1] || (menuData[keys[i]][1] && menuData[keys[i]][1].trim() === '')){
         const newDetail = template.content.getElementById('read-menu-detail').cloneNode()
         newDetail.classList.remove('hidden')
@@ -158,7 +158,8 @@ function initiateMainData(data){
 
       newDetail.children[0].textContent = keys[i] + ': '
       newDetailBtnContainer = newDetail.children[1]
-      newDetail.id = 'select-menu-detail-' + i
+      
+      if(!newDetail.dataset.priceRef) newDetail.dataset.priceRef = i
 
       for(let j=0; j<menuData[keys[i]].length; j++){
         const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
@@ -166,6 +167,7 @@ function initiateMainData(data){
 
         newSelectableDetail.textContent = menuData[keys[i]][j]
         newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + keys[i] + '-' + j
+        newSelectableDetail.dataset.selfIndex = j
         newDetailBtnContainer.appendChild(newSelectableDetail)
 
         newSelectableDetail.onclick = () => {
@@ -174,10 +176,13 @@ function initiateMainData(data){
 
           newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
           newNode.dataset['extra' + i] = newSelectableDetail.textContent
-
-          if(i === 4 && menuData.price.length > 1 && menuData.price.length > newSelectableDetail.id.at(-1)){
-            detailsChildren[0].textContent = "harga: " + menuData.price[newSelectableDetail.id.at(-1)]
-            newNode.dataset['price'] = menuData.price[newSelectableDetail.id.at(-1)]
+          
+          
+          let selfIndex = parseInt(newSelectableDetail.dataset.selfIndex)
+          //alert(menuData.price[newSelectableDetail.dataset.selfIndex])
+          if(i === parseInt(newDetail.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
+            detailsChildren[0].textContent = "harga: " + menuData.price[selfIndex]
+            newNode.dataset['price'] = menuData.price[newSelectableDetail.dataset.selfIndex]
             detailsChildren[0].classList.add('text-red-500')
             setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
           }
