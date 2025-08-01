@@ -24,17 +24,17 @@
       </button>
     </div>
   </nav>
-  
-  
+
+
   <div id="shopping-cart" class="hidden p-2 flex flex-col justify-center py-4">
     <button class="py-1 px-2 bg-[#E0E0E0] rounded-md w-fit mx-auto" onclick="toggleCart()">kembali ke menu</button>
-    
+
     <div id="cart-container" class="border-1 mt-5 py-2 px-3 bg-black/4 rounded-md">
       <h1 class="text-center text-2xl mb-5">Keranjang Belanja</h1>
       <h2 class="text-xl">barang:</h2>
       <ul id="cart-item-list" class="flex flex-col gap-2 min-h-[200px]">
         <!-- cart-item-list-node -->
-        
+
       </ul>
       <div id="total-price-container" class="flex gap-2 text-xl">
         <h2>total harga: </h2>
@@ -42,27 +42,25 @@
       </div>
     </div>
     <button class="bg-green-500 w-full text-center text-xl py-1 mt-3 rounded-lg" onclick='makeOrder()'>Buatkan Pesanan</button>
-    
-    <textarea id='textarea'></textarea>
   </div>
-  
-  
+
+
   <main id="page-main" class="mt-1">
     <section class="flex flex-col items-center px-3 mt-6 py-8" id="hero-section">
       <h1 id="hero-text" class="text-5xl ml-3 text-[#333333] mb-3">Slogan</h1>
-      
+
       <img class="h-64" src="./data/images/bowl.svg">
-      
-      
+
+
     </section>
-    
+
     <section id="menu" class="flex flex-col px-3 py-6 bg-[#E0E0E0] min-h-100">
       <div id="notice-container" class="hidden px-5 py-2 bg-white max-w-[70%] mx-auto rounded-xl mb-3">
         <h2 id="notice-header" class="text-xl text-center text-red-500 mb-1">Notice!</h2>
         <p id="notice-text" class="text-sm text-center mx-auto">notice-text</p>
       </div>
-      
-      
+
+
       <h2 class="text-3xl ml-3 mb-3">Menu:</h2>
       <ul id="menu-list" class="flex flex-col items-center gap-3">
         <!-- menu-list-node -->
@@ -70,8 +68,8 @@
       <h2 id="loading-indicator" class="w-full text-center text-xl">loading...</h2>
     </section>
   </main>
-  
-  
+
+
   <footer id="page-footer" class="py-3">
     <h1 id="" class="text-center text-2xl mb-1">ada pertanyaan?</h1>
     <div id="contact-container" class="w-full overflow-x-auto ">
@@ -80,10 +78,10 @@
       </ul>
     </div>
   </footer>
-  
-  
+
+
   <template id="template-node">
-    
+
     <li id="menu-list-node" class="hidden bg-[#F7F7F7] flex flex-col w-[90%] px-5 py-2 rounded-md shadow-md">
       <img id="image" class="max-w-[calc(100%-20px)] max-h-64 min-h-32 mx-auto" alt="tidak ada gambar">
       <h3 id="name" class="text-3xl mb-1 text-center"></h3>
@@ -102,12 +100,12 @@
         <button id="place-order-button" class="bg-green-500 w-full px-2 py-1 text-md mt-2 rounded-sm" onclick="addOrder(this)">tambah ke keranjang</button>
       </div>
     </li>
-    
+
     <li id="error-menu" class="bg-white px-3 py-2 flex flex-col items-center rounded-lg">
       <h1 class="text-red-500 mb-3">error</h1>
       <button class="bg-blue-500 text-white px-2 py-1 w-fit rounded-lg">try again</button>
     </li>
-    
+
     <li id="cart-item-list-node" class="hidden flex flex-row items-start flex-wrap justify-between">
       <ul id="cart-item-detail-node" class="flex flex-grow flex-wrap max-w-[80%] gap-1">
         <li id="same-order-total" class="border-1 border-black rounded-lg px-1 bg-black/50 text-white">1</li>
@@ -117,19 +115,19 @@
       </ul>
       <button class="px-1 h-fit border-1 border-black bg-black/50 rounded-lg text-white" onclick='removeItem(this)'>hapus</button>
     </li>
-    
-    
+
+
     <li id="contact-node" class="shrink-0">
       <button class="bg-green-500 w-fit px-1 rounded-2xl flex items-center">
         <img class="h-6 my-auto" src="./data/images/whatsapp.svg"><span class="text-black/80 text-lg inline-block">fadhil</span>
       </button>
     </li>
-    
+
   </template>
 
-  
-  
-  
+
+
+
 
 <script src="main.js"></script>
 </body>
