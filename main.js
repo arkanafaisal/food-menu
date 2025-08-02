@@ -69,12 +69,16 @@ async function mainFunction(){
 
     dataCleaned.push(dataObject)
   }
-    dataCleaned.sort((a,b) => {
-      if(a.stock === 'habis' && b.stock === 'tersedia'){return 1}
-      if(a.stock === 'tersedia' && b.stock === 'habis'){return -1}
-      return 0
-    })
+  
+  const priority = {
+  'tersedia': 0,
+  'habis': 1,
+  'sembunyikan': 2
+  };
 
+  dataCleaned.sort((a, b) => priority[a.stock] - priority[b.stock]);
+  
+  
   initiateMainData(dataCleaned)
 }
 
@@ -159,7 +163,7 @@ function initiateMainData(data){
       newDetail.children[0].textContent = keys[i] + ': '
       newDetailBtnContainer = newDetail.children[1]
       
-      if(!newDetail.dataset.priceRef) newDetail.dataset.priceRef = i
+      if(!(newNode.dataset.priceRef)) {newNode.dataset.priceRef = i}
 
       for(let j=0; j<menuData[keys[i]].length; j++){
         const newSelectableDetail = newDetailBtnContainer.children[0].cloneNode()
@@ -169,6 +173,7 @@ function initiateMainData(data){
         newSelectableDetail.id = newNode.dataset['name'].replace(/\s+/g, "") + '-item-detail-' + keys[i] + '-' + j
         newSelectableDetail.dataset.selfIndex = j
         newDetailBtnContainer.appendChild(newSelectableDetail)
+        
 
         newSelectableDetail.onclick = () => {
           let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
@@ -179,8 +184,7 @@ function initiateMainData(data){
           
           
           let selfIndex = parseInt(newSelectableDetail.dataset.selfIndex)
-          //alert(menuData.price[newSelectableDetail.dataset.selfIndex])
-          if(i === parseInt(newDetail.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
+          if(i === parseInt(newNode.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
             detailsChildren[0].textContent = "harga: " + menuData.price[selfIndex]
             newNode.dataset['price'] = menuData.price[newSelectableDetail.dataset.selfIndex]
             detailsChildren[0].classList.add('text-red-500')
