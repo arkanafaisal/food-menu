@@ -1,8 +1,12 @@
 const template = document.getElementById('template-node')
 
+const allData = {
+  essentialData: {},
+  mainData: []
+}
 
 
-const essentialData = {}
+const essentialData = allData.essentialData
 mainFunction()
 
 async function mainFunction(){
@@ -20,19 +24,13 @@ async function mainFunction(){
 
   document.getElementById('loading-indicator').classList.add('hidden')
   if(errorMessage){
-    const errorNode = template.content.getElementById('error-menu').cloneNode(true)
+    const errorNode = document.getElementById('error-menu')
+    errorNode.classList.remove('hidden')
     errorNode.children[0].textContent = errorMessage
-    errorNode.children[1].onclick = ()=>{
-      document.getElementById('loading-indicator').classList.remove('hidden')
-      document.getElementById('error-menu').remove()
-      mainFunction()
-    }
-    menuList.appendChild(errorNode)
     return
   }
 
 
-  let dataCleaned = []
   for(let i=0; i<data.length; i++){
     const current = data[i]
     if(i === 1){
@@ -46,7 +44,8 @@ async function mainFunction(){
       continue
     }
     if(i < 4){continue}
-
+    
+    if(current[1] === 'sembunyikan')continue
     let dataObject = {}
     dataObject.name = current[0]
     dataObject.stock = current[1]
@@ -67,7 +66,7 @@ async function mainFunction(){
       dataObject[extra[0].trim()] = extra[1].split('/').map(val => val.trim())
     }
 
-    dataCleaned.push(dataObject)
+    allData.mainData.push(dataObject)
   }
   
   const priority = {
@@ -76,10 +75,10 @@ async function mainFunction(){
   'sembunyikan': 2
   };
 
-  dataCleaned.sort((a, b) => priority[a.stock] - priority[b.stock]);
+  allData.mainData.sort((a, b) => priority[a.stock] - priority[b.stock]);
   
-  
-  initiateMainData(dataCleaned)
+  console.log(allData)
+  initiateMainData(allData.mainData)
 }
 
 function initiateEssentialData(data){
@@ -97,15 +96,16 @@ function initiateEssentialData(data){
     document.getElementById('notice-text').parentElement.classList.remove('hidden')
   }
 
-  if(data && data.contactPerson[0] !== ''){
+  if(data && data.contactPerson[0][0] !== ''){
     data.contactPerson.forEach(item => {
       const newNode = template.content.getElementById('contact-node').cloneNode(true)
       newNode.children[0].children[1].textContent = item[0]
+
       if(!item[1] || item[1].trim() === '') return 
-      newNode.children[0].onclick = () => {
-        const linkWa = 'https://wa.me/' + item[1] + '?text=' + 'permisi%20kak%20' + item[0] + '...%0A'
-        window.open(linkWa, '_blank')
-      }
+      newNode.setAttribute(
+        'onclick',
+        `waRedirect('${item[1]}', '${item[0]}')`
+      )
 
      document.getElementById('contact-list').appendChild(newNode)
     })
@@ -120,9 +120,7 @@ let menuListNodeWidth = (menuList.offsetWidth * 0.7) + 'px'
 function initiateMainData(data){
   const fragment = document.createDocumentFragment()
   data.forEach(menuData => {
-    if(menuData.stock === 'sembunyikan') return
     const newNode = menuListNode.cloneNode(true)
-    newNode.onclick = () => {changeMenuSelected(newNode, event)}
     newNode.classList.remove('hidden')
 
     const nodeChildren = newNode.children
@@ -174,23 +172,28 @@ function initiateMainData(data){
         newSelectableDetail.dataset.selfIndex = j
         newDetailBtnContainer.appendChild(newSelectableDetail)
         
+        
+        
+        newSelectableDetail.setAttribute(
+          'onclick',
+          `changeSelectableDetail(this, '${newNode}', '${i}', '${menuData}', '${detailsChildren}')`
+        )
+        // newSelectableDetail.onclick = () => {
+        //   let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
+        //   oldSelected.classList.remove('selected', 'bg-blue-500/50')
 
-        newSelectableDetail.onclick = () => {
-          let oldSelected = newSelectableDetail.parentElement.querySelector('.selected')
-          oldSelected.classList.remove('selected', 'bg-blue-500/50')
-
-          newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
-          newNode.dataset['extra' + i] = newSelectableDetail.textContent
+        //   newSelectableDetail.classList.add('selected', 'bg-blue-500/50')
+        //   newNode.dataset['extra' + i] = newSelectableDetail.textContent
           
           
-          let selfIndex = parseInt(newSelectableDetail.dataset.selfIndex)
-          if(i === parseInt(newNode.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
-            detailsChildren[0].textContent = "harga: " + menuData.price[selfIndex]
-            newNode.dataset['price'] = menuData.price[newSelectableDetail.dataset.selfIndex]
-            detailsChildren[0].classList.add('text-red-500')
-            setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
-          }
-        }
+        //   let selfIndex = parseInt(newSelectableDetail.dataset.selfIndex)
+        //   if(i === parseInt(newNode.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
+        //     detailsChildren[0].textContent = "harga: " + menuData.price[selfIndex]
+        //     newNode.dataset['price'] = menuData.price[newSelectableDetail.dataset.selfIndex]
+        //     detailsChildren[0].classList.add('text-red-500')
+        //     setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
+        //   }
+        // }
       }
       newDetailBtnContainer.children[1].classList.add('selected', 'bg-blue-500/50')
       newNode.dataset['extra' + i] = menuData[keys[i]][0]
@@ -344,3 +347,33 @@ function toggleCart(){
   cartNotif.textContent = 0
 }
 
+function tryAgain(el){
+  el.parentElement.classList.add('hidden')
+  document.getElementById('loading-indicator').classList.remove('hidden')
+  mainFunction()
+}
+
+function waRedirect(name, number){
+  const linkWa = 'https://wa.me/' + number + '?text=' + 'permisi%20kak%20' + name + '...%0A'
+  window.open(linkWa, '_blank')
+}
+
+function changeSelectableDetail(el, root, i, menuData, detailsChildren){
+  const root2 = el.parentElement.parentElement.parentElement.parentElement.parentElement
+  console.log(root2)
+  console.log(el, root, i, menuData, detailsChildren)
+
+  let oldSelected = el.parentElement.querySelector('.selected')
+  oldSelected.classList.remove('selected', 'bg-blue-500/50')
+
+  el.classList.add('selected', 'bg-blue-500/50')
+  root.dataset['extra' + i] = el.textContent
+  
+  let selfIndex = parseInt(el.dataset.selfIndex)
+  if(i === parseInt(root.dataset.priceRef) && menuData.price.length > 1 && menuData.price.length > selfIndex){
+    detailsChildren[0].textContent = "harga: " + menuData.price[selfIndex]
+    root.dataset['price'] = menuData.price[newSelectableDetail.dataset.selfIndex]
+    detailsChildren[0].classList.add('text-red-500')
+    setTimeout(() => {detailsChildren[0].classList.remove('text-red-500')}, 300)
+  }
+}
